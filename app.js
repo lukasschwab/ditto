@@ -47,8 +47,8 @@ io.on('connection', function(socket) {
     })
 })
 
-nsp = createNamespace("main", magnet);
-console.log("Default nsp created", nsp.magnet)
+nsp = createNamespace("demo", magnet);
+console.log("demo nsp created:", nsp.magnet)
 
 function createNamespace(id, magnet) {
     var nsp = io.of('/' + id);

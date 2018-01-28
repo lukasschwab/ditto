@@ -13,3 +13,5 @@
 + Other video formats besides mp4
 
 + Remove namespaces after disuse
+
++ Add favicon
