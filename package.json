@@ -1,9 +1,32 @@
 {
-  "name": "socket-chat-example",
+  "name": "ditto",
   "version": "0.0.1",
   "description": "A socket.io test application",
   "dependencies": {
     "express": "^4.15.2",
     "socket.io": "^2.0.4"
-  }
+  },
+  "engines": {
+    "node": "6.2.1"
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app",
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukasschwab/ditto.git"
+  },
+  "keywords": [
+    "webtorrent",
+    "socket.io"
+  ],
+  "author": "Lukas Schwab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lukasschwab/ditto/issues"
+  },
+  "homepage": "https://github.com/lukasschwab/ditto#readme"
 }
