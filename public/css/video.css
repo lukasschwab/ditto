@@ -1,0 +1,23 @@
+#share {
+    margin-top: 1em;
+    text-align: center;
+}
+
+#tempalink {
+    background-color: #34495e;
+    color: #bdc3c7;
+    border: none;
+    margin: 0;
+    font-family: 'Roboto Mono', monospace;
+    font: 18px/1 monospace;
+    height: 20px;
+    padding: 20px 0;
+    text-align: center;
+    resize: none;
+    width: 100%;
+
+}
+
+#tempalink:focus {
+    outline: none;
+}
