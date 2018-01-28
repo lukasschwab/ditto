@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "A socket.io test application",
   "dependencies": {
+    "consolidate": "^0.15.0",
+    "ejs": "^2.5.7",
     "express": "^4.15.2",
+    "pug": "^2.0.0-rc.4",
     "socket.io": "^2.0.4"
   },
   "engines": {
