@@ -6,3 +6,16 @@ body {
     color: #ecf0f1;
     font-family: 'Roboto', sans-serif;
 }
+
+a {
+    color: #95a5a6;
+}
+
+a:hover {
+    color: #f1c40f;
+    text-decoration: none;
+}
+
+a:clicked {
+    color: #f1c40f;
+}

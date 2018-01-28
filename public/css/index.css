@@ -7,6 +7,10 @@
     line-height: 1.2;
 }
 
+.quiet {
+    color: #95a5a6;
+}
+
 .name {
     color: #f1c40f;
 }
@@ -18,6 +22,7 @@
 }
 
 .form-control {
+    /*font-size: 25px;*/
     background-color: #34495e;
     color: #bdc3c7;
     border-color:  #ecf0f1;
