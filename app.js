@@ -3,12 +3,20 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var engines = require('consolidate');
 
+var xkcdPassword = require('xkcd-password')
+var pw = new xkcdPassword();
+var tempOptions = {
+    numWords: 4,
+    minLength: 4,
+    maxLength: 7
+}
+
 // Rendering engine
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 app.get('/', function(req, res){
-    res.send("<h1>Ya got it</h1>")
+    res.render("index")
 })
 
 // Temporary
@@ -23,44 +31,26 @@ app.get('*', function(req, res) {
     res.redirect('/');
 })
 
+io.on('connection', function(socket) {
+    console.log("Someone connected to main page.")
+    socket.on('makeroom', function(magnet){
+        // Make a new room
+        pw.generate(tempOptions).then(function(id) {
+            id = id.join('-')
+            nsp = createNamespace(id, magnet)
+            socket.emit('redirect', id)
+        })
+    })
+})
+
 nsp = createNamespace("main", magnet);
 console.log("Default nsp created", nsp.magnet)
-
-// io.on('connection', function(socket){
-//     console.log("A user connected.");
-//     socket.emit('magnet', magnet)
-//     console.log("Sent magnet", magnet)
-//     socket.on('disconnect', function(){
-//         console.log('user disconnected')
-//     })
-// });
-
-// io.on('connection', function(socket){
-//     socket.on('chat message', function(msg){
-//         io.emit('chat message', msg)
-//     })
-// })
-
-// io.on('connection', function(socket){
-//     socket.on('pause', function(){
-//         console.log("pause signal")
-//         io.emit('pause')
-//     })
-// })
-
-// io.on('connection', function(socket){
-//     socket.on('play', function(time){
-//         console.log("play signal")
-//         io.emit('play', time)
-//     })
-// })
 
 function createNamespace(id, magnet) {
     var nsp = io.of('/' + id);
     nsp.on('connection', function(socket){
         console.log("A user connected to", nsp.name);
-        socket.emit('magnet', magnet)
-        console.log("Sent magnet", magnet)
+        socket.emit('magnet', nsp.magnet)
         socket.on('disconnect', function(){
             console.log('user disconnected')
         })
@@ -74,19 +64,18 @@ function createNamespace(id, magnet) {
 
     nsp.on('connection', function(socket){
         socket.on('pause', function(){
-            console.log("pause signal")
             nsp.emit('pause')
         })
     })
 
     nsp.on('connection', function(socket){
         socket.on('play', function(time){
-            console.log("play signal")
             nsp.emit('play', time)
         })
     })
     
     nsp.magnet = magnet;
+    console.log("Made namespace", id, magnet)
 
     return nsp
 }
