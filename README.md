@@ -21,8 +21,10 @@
 + Add chat
 
 + Solve loop
-    + Is it caused by the server emitting the event to the same client that triggered it?
+    + Server should not emit event to the socket that triggered it.
     + Is it caused by two clients in different states, oscillating?
+
++ Buy `ditto.movie` for $28
 
 I think it's that when the player begins to play because it receives an event from the server, it triggers onplay, sending another play event to the server.
 

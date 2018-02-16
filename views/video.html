@@ -21,12 +21,12 @@
         <form action="">
             <input id="m" autocomplete="off" /><button>Send</button>
         </form> -->
+        <!-- TODO: Refactor out the scripts. -->
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
             document.getElementById("tempalink").value = window.location.href;
             var client = new WebTorrent()
-            // Sintel, a free, Creative Commons movie            
             $(function () {
                 var renderedFlag = false;
                 var socket = io('/' + window.location.pathname.split("/")[2]);

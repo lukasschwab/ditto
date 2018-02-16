@@ -60,21 +60,23 @@ function createNamespace(id, magnet) {
         })
     });
 
-    nsp.on('connection', function(socket){
-        socket.on('chat message', function(msg){
-            nsp.emit('chat message', msg)
-        })
-    })
+    // nsp.on('connection', function(socket){
+    //     socket.on('chat message', function(msg){
+    //         nsp.emit('chat message', msg)
+    //     })
+    // })
 
     nsp.on('connection', function(socket){
         socket.on('pause', function(){
-            nsp.emit('pause')
+            socket.broadcast.emit('pause')
+            // nsp.emit('pause')
         })
     })
 
     nsp.on('connection', function(socket){
         socket.on('play', function(time){
-            nsp.emit('play', time)
+            socket.broadcast.emit('play', time)
+            // nsp.emit('play', time)
         })
     })
     
