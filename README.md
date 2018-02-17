@@ -21,7 +21,6 @@
 + Add chat
 
 + Solve loop
-    + Server should not emit event to the socket that triggered it.
     + Is it caused by two clients in different states, oscillating?
 
 + Buy `ditto.movie` for $28

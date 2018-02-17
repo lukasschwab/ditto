@@ -27,6 +27,7 @@
         <script>
             document.getElementById("tempalink").value = window.location.href;
             var client = new WebTorrent()
+            var lastTime = -1;
             $(function () {
                 var renderedFlag = false;
                 var socket = io('/' + window.location.pathname.split("/")[2]);
@@ -54,7 +55,10 @@
                     socket.emit('pause');
                 }
                 v.onplay = function(){
-                    socket.emit('play', v.currentTime);
+                    // Prevent looping
+                    if (v.currentTime != lastTime) {
+                        socket.emit('play', v.currentTime);
+                    }
                 }
                 // $('form').submit(function(){
                 //     socket.emit('chat message', $('#m').val());
@@ -69,6 +73,7 @@
                 })
                 socket.on('play', function(time){
                     v.currentTime = time;
+                    lastTime = time;
                     v.play();
                 })
             });
