@@ -6,6 +6,7 @@
         <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
         <link rel="stylesheet" href="/css/main.css">
         <link rel="stylesheet" href="/css/video.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
         <div id="viewer">
@@ -36,6 +37,12 @@
                 socket.on("magnet", function(torrentId){
                     console.log("magnet received")
                     client.add(torrentId, function (torrent) {
+                        torrent.on('download', function (bytes) {
+                            console.log('just downloaded: ' + bytes)
+                            console.log('total downloaded: ' + torrent.downloaded);
+                            console.log('download speed: ' + torrent.downloadSpeed)
+                            console.log('progress: ' + torrent.progress)
+                        })
                         // Torrents can contain many files. Let's use the .mp4 file
                         var file = torrent.files.find(function (file) {
                             return file.name.endsWith('.mp4')
