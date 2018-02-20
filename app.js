@@ -15,20 +15,15 @@ var tempOptions = {
 
 app.use(express.static('public'))
 
-// Rendering engine
-// app.engine('html', require('ejs').renderFile);
-// app.set('view engine', 'html');
-
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/views/index.html');
 })
 
-// Temporary
-var magnet = "magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent"
+// TODO: factor this out into a different file that exports it.
+var DEMO_MAGNET = "magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent"
 
 app.get('/watch/*', function(req, res) {
     res.sendFile(__dirname + '/views/video.html');
-    // res.render("video")
 });
 
 app.get('*', function(req, res) {
@@ -47,16 +42,18 @@ io.on('connection', function(socket) {
     })
 })
 
-nsp = createNamespace("demo", magnet);
-console.log("demo nsp created:", nsp.magnet)
+demo = createNamespace("demo", DEMO_MAGNET);
+console.log("Namespace demo created:", demo.magnet)
 
 function createNamespace(id, magnet) {
     var nsp = io.of('/' + id);
     nsp.on('connection', function(socket){
         console.log("A user connected to", nsp.name);
+        socket.broadcast.emit('usrchange', Object.keys(nsp.connected).length)
         socket.emit('magnet', nsp.magnet)
         socket.on('disconnect', function(){
             console.log('user disconnected')
+            socket.broadcast.emit('usrchange', Object.keys(nsp.connected).length)
         })
     });
 
@@ -69,14 +66,12 @@ function createNamespace(id, magnet) {
     nsp.on('connection', function(socket){
         socket.on('pause', function(){
             socket.broadcast.emit('pause')
-            // nsp.emit('pause')
         })
     })
 
     nsp.on('connection', function(socket){
         socket.on('play', function(time){
             socket.broadcast.emit('play', time)
-            // nsp.emit('play', time)
         })
     })
     
