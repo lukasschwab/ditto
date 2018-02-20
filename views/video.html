@@ -83,6 +83,9 @@
                     lastTime = time;
                     v.play();
                 })
+                socket.on('usrchange', function(count){
+                   // alert(count) // FIXME: Make this some cute little element in the dom
+                })
             });
         </script>
     </body>
