@@ -14,9 +14,8 @@
 
 + Remove namespaces after disuse
 
-+ Add favicon
-
 + Add count of watchers
+    + I built the sockets.io infra for this. Just need to design it into the app.
 
 + Add chat
 
@@ -48,3 +47,8 @@ It's hard to tell whether this is a bad torrent listing or a product of the netw
 When I'm downloading Sintel, it logs torrent download progress; when I'm downloading the above magnet, I don't get any progress reported. Additionally, `client.torrents[0].files` is an empty list.
 
 The second time I tried it in WebTorrent Desktop, it did successfully recognize the file (though it didn't do much downloading).
+
+## Update
+
+Given some of the difficulties of using WebTorrent for large videos in the browser, I think it makes more sense to port the WebTorrent desktop client and bolt on the sockets functionality (using some dedicated webserver to do so).
+
