@@ -1,92 +1,92 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Ditto</title>
-        <base href="/">
-        <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
-        <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="/css/video.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    </head>
-    <body>
-        <div id="viewer">
-            <video id="v" width="100%" controls>
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <div id="share">
-            <p>Don't watch alone! Send this link to a friend:</p>
-            <textarea readonly type="text" maxlength="10000000" id="tempalink" onclick="this.focus();this.select()"></textarea>
-        </div>
-        <!-- <ul id="messages"></ul>
-        <form action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
-        </form> -->
-        <!-- TODO: Refactor out the scripts. -->
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-        <script>
-            document.getElementById("tempalink").value = window.location.href;
-            var client = new WebTorrent()
-            var lastTime = -1;
-            $(function () {
-                var renderedFlag = false;
-                var socket = io('/' + window.location.pathname.split("/")[2]);
-                var v = document.getElementById("v");
-                console.log('running')
-                socket.on("magnet", function(torrentId){
-                    console.log("magnet received")
-                    client.add(torrentId, function (torrent) {
-                        torrent.on('download', function (bytes) {
-                            console.log('just downloaded: ' + bytes)
-                            console.log('total downloaded: ' + torrent.downloaded);
-                            console.log('download speed: ' + torrent.downloadSpeed)
-                            console.log('progress: ' + torrent.progress)
-                        })
-                        // Torrents can contain many files. Let's use the .mp4 file
-                        var file = torrent.files.find(function (file) {
-                            return file.name.endsWith('.mp4')
-                        })
-                        // Display the file by adding it to the DOM.
-                        // Supports video, audio, image files, and more!
-                        file.autoplay = false;
-                        // TODO: use callback to notify other user of new viewer.
-                        file.renderTo('video#v', {"autoplay": false}, function(err, elem) {
-                            if (err) throw err;
-                            console.log("Element added with content", elem)
-                        });
-                    })
-                })
+<head>
+  <title>Ditto</title>
+  <base href="/">
+  <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/video.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <div id="viewer">
+    <video id="v" width="100%" controls>
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div id="share">
+    <p>Don't watch alone! Send this link to a friend:</p>
+    <textarea readonly type="text" maxlength="10000000" id="tempalink" onclick="this.focus();this.select()"></textarea>
+  </div>
+  <!-- <ul id="messages"></ul>
+  <form action="">
+  <input id="m" autocomplete="off" /><button>Send</button>
+</form> -->
+<!-- TODO: Refactor out the scripts. -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+document.getElementById("tempalink").value = window.location.href;
+var client = new WebTorrent()
+var lastTime = -1;
+$(function () {
+  var renderedFlag = false;
+  var socket = io('/' + window.location.pathname.split("/")[2]);
+  var v = document.getElementById("v");
+  console.log('running')
+  socket.on("magnet", function(torrentId){
+    console.log("magnet received")
+    client.add(torrentId, function (torrent) {
+      torrent.on('download', function (bytes) {
+        console.log('just downloaded: ' + bytes)
+        console.log('total downloaded: ' + torrent.downloaded);
+        console.log('download speed: ' + torrent.downloadSpeed)
+        console.log('progress: ' + torrent.progress)
+      })
+      // Torrents can contain many files. Let's use the .mp4 file
+      var file = torrent.files.find(function (file) {
+        return file.name.endsWith('.mp4')
+      })
+      // Display the file by adding it to the DOM.
+      // Supports video, audio, image files, and more!
+      file.autoplay = false;
+      // TODO: use callback to notify other user of new viewer.
+      file.renderTo('video#v', {"autoplay": false}, function(err, elem) {
+        if (err) throw err;
+        console.log("Element added with content", elem)
+      });
+    })
+  })
 
-                v.onpause = function(){
-                    socket.emit('pause');
-                }
-                v.onplay = function(){
-                    // Prevent looping
-                    if (v.currentTime != lastTime) {
-                        socket.emit('play', v.currentTime);
-                    }
-                }
-                // $('form').submit(function(){
-                //     socket.emit('chat message', $('#m').val());
-                //     $('#m').val('');
-                //     return false;
-                // });
-                // socket.on('chat message', function(msg){
-                //     $('#messages').append($('<li>').text(msg));
-                // })
-                socket.on('pause', function(){
-                    v.pause()
-                })
-                socket.on('play', function(time){
-                    v.currentTime = time;
-                    lastTime = time;
-                    v.play();
-                })
-                socket.on('usrchange', function(count){
-                   // alert(count) // FIXME: Make this some cute little element in the dom
-                })
-            });
-        </script>
-    </body>
+  v.onpause = function(){
+    socket.emit('pause');
+  }
+  v.onplay = function(){
+    // Prevent looping
+    if (v.currentTime != lastTime) {
+      socket.emit('play', v.currentTime);
+    }
+  }
+  // $('form').submit(function(){
+  //     socket.emit('chat message', $('#m').val());
+  //     $('#m').val('');
+  //     return false;
+  // });
+  // socket.on('chat message', function(msg){
+  //     $('#messages').append($('<li>').text(msg));
+  // })
+  socket.on('pause', function(){
+    v.pause()
+  })
+  socket.on('play', function(time){
+    v.currentTime = time;
+    lastTime = time;
+    v.play();
+  })
+  socket.on('usrchange', function(count){
+    // alert(count) // FIXME: Make this some cute little element in the dom
+  })
+});
+</script>
+</body>
 </html>

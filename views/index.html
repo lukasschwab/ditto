@@ -1,48 +1,48 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Ditto</title>
-        <base href="/">
-        <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="/css/index.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    </head>
-    <body>
-        <div id="main" class="container">
-            <div class="col-lg-8">
-                <p class="shouty"><span class="name">Ditto</span> lets you watch movies with people.</p>
-                <p>Enter a torrent magnet link below to generate a secret temporary theater.<br>Playback controls (pause, play, skip) are shared in real time.</p>
-                <form action="">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">magnet</span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="magnet:" aria-label="Magnet" aria-describedby="basic-addon1" spellcheck="false" id="m">
-                    </div>
-                </form>
-                <p class="quiet"><a href="http://lukasschwab.me">Lukas Schwab</a> &middot; <a href="https://github.com/lukasschwab/ditto">Ditto on GitHub</a></p>
-            </div>
+<head>
+  <title>Ditto</title>
+  <base href="/">
+  <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <div id="main" class="container">
+    <div class="col-lg-8">
+      <p class="shouty"><span class="name">Ditto</span> lets you watch movies with people.</p>
+      <p>Enter a torrent magnet link below to generate a secret temporary theater.<br>Playback controls (pause, play, skip) are shared in real time.</p>
+      <form action="">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">magnet</span>
+          </div>
+          <input type="text" class="form-control" placeholder="magnet:" aria-label="Magnet" aria-describedby="basic-addon1" spellcheck="false" id="m">
         </div>
-        <!-- TODO: Refactor out the scripts. -->
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-        <script>
-            var client = new WebTorrent()
-            $(function () {
-                var renderedFlag = false;
-                var socket = io();
-                
-                $('form').submit(function(){
-                    socket.emit('makeroom', $('#m').val());
-                    $('#m').val('');
-                    return false;
-                });
-                socket.on('redirect', function(id) {
-                    window.location.href = "/watch/" + id;
-                })
-            });
-        </script>
-    </body>
+      </form>
+      <p class="quiet"><a href="http://lukasschwab.me">Lukas Schwab</a> &middot; <a href="https://github.com/lukasschwab/ditto">Ditto on GitHub</a></p>
+    </div>
+  </div>
+  <!-- TODO: Refactor out the scripts. -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+  var client = new WebTorrent()
+  $(function () {
+    var renderedFlag = false;
+    var socket = io();
+
+    $('form').submit(function(){
+      socket.emit('makeroom', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('redirect', function(id) {
+      window.location.href = "/watch/" + id;
+    })
+  });
+  </script>
+</body>
 </html>

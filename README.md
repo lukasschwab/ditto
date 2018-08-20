@@ -1,6 +1,28 @@
 # Ditto
 
-## Todo
+Ditto is an in-browser streaming torrent client for synchronizing playback in multiple browsers.
+
+It's a stalled proof of concept. The browser is an unattractive way to stream large––especially multi-gigabyte––video files; further development would be on a native client: along the lines of WebTorrent's, with sharing/chat/synchronization bolted on.
+
+## Usage
+
+```
+$ npm start
+```
+
+## Tech
+
++ WebTorrent provides the blood-and-guts torrent support.
+
++ Sockets.io channels room creation and playback synchronization.
+
+## Known issues
+
++ In certain cases, Sockets.io latency produced infinite pause/unpause loops; these have been mostly resolved.
+
++ Debugging from torrent-hostile networks is a pain.
+
+<!-- ## Todo
 
 + Cleanup
     + Indentation everywhere
@@ -51,4 +73,4 @@ The second time I tried it in WebTorrent Desktop, it did successfully recognize 
 ## Update
 
 Given some of the difficulties of using WebTorrent for large videos in the browser, I think it makes more sense to port the WebTorrent desktop client and bolt on the sockets functionality (using some dedicated webserver to do so).
-
+ -->

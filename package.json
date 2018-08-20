@@ -1,7 +1,7 @@
 {
   "name": "ditto",
   "version": "0.0.1",
-  "description": "A socket.io test application",
+  "description": "Streamed and synchronized in-browser video torrents",
   "dependencies": {
     "consolidate": "^0.15.0",
     "ejs": "^2.5.7",
